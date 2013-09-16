@@ -1,0 +1,14 @@
+如何增加一个新网站
+1.MainFrame里面搜索注释"//加入任务列表",添加新的任务
+2.默认选中的任务，是通过绑定事件，写到webs list里面的，先add监听，后set true会触发事件处理方法
+    checkBox.addItemListener(this);
+    checkBox.setSelected(true);
+3.config.properties
+    1).填公司搜寻列表页面URL，和公司名称超级链接A的正则表达式
+    2).可以用正则表达式测试工具测试，patten是否正确
+    3)可以使用 WebProcessor里面的main方法，测试一个网站的设置是不是正确，debug程序
+
+
+FAQ:
+    1)速度慢的时候可以考虑适当增加线程数，最好是2的倍数，充分利用双核 4核
+    2)配置文件里面写正则表达式， 转义字符 \要用\\,例如”\d“,要写成”\\d“,正则测试工具，不能写成\\d,要用\d
