@@ -39,20 +39,22 @@ import javax.swing.border.EmptyBorder;
  */
 public class RegexFrame extends JFrame {
 
-    private JPanel m_contentPane;
-    private JTextField jTextField1;
-    private JTextArea txtAreaSrc;
-    private JTextArea txtAreaResult;
-    private JCheckBox jCheckBoxCaseIn;
-    private JCheckBox jCheckBoxDotAll;
-    private JScrollPane m_scrollPaneSrc;
-    private JScrollPane m_scrollPaneResult;
+    private final JPanel m_contentPane;
+    private final JTextField jTextField1;
+    private final JTextArea txtAreaSrc;
+    private final JTextArea txtAreaResult;
+    private final JCheckBox jCheckBoxCaseIn;
+    private final JCheckBox jCheckBoxDotAll;
+    private final JScrollPane m_scrollPaneSrc;
+    private final JScrollPane m_scrollPaneResult;
 
+    
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
                     RegexFrame frame = new RegexFrame();
@@ -70,7 +72,7 @@ public class RegexFrame extends JFrame {
     public RegexFrame() {
         addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(ComponentEvent e) {
+            public void componentResized(final ComponentEvent e) {
                 onResize();
             }
         });
@@ -91,7 +93,8 @@ public class RegexFrame extends JFrame {
         JButton btnResult = new JButton("匹配结果");
         btnResult.setFont(new Font("宋体", Font.PLAIN, 12));
         btnResult.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
                 btnResultMouseClicked(e);
             }
         });
@@ -101,7 +104,8 @@ public class RegexFrame extends JFrame {
         JButton btnList = new JButton("匹配列表");
         btnList.setFont(new Font("宋体", Font.PLAIN, 12));
         btnList.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
                 btnListMouseClicked(e);
             }
         });
@@ -140,7 +144,7 @@ public class RegexFrame extends JFrame {
      * {method description}.
      * @param e
      */
-    protected void btnResultMouseClicked(ActionEvent e) {
+    protected void btnResultMouseClicked(final ActionEvent e) {
         this.txtAreaResult.setText("");
         int mode = (jCheckBoxDotAll.isSelected() ? Pattern.DOTALL : 0)
                 | (jCheckBoxCaseIn.isSelected() ? Pattern.CASE_INSENSITIVE : 0);
@@ -171,7 +175,7 @@ public class RegexFrame extends JFrame {
      * {method description}.
      * @param e
      */
-    protected void btnListMouseClicked(ActionEvent e) {
+    protected void btnListMouseClicked(final ActionEvent e) {
         this.txtAreaResult.setText("");
         int mode = (jCheckBoxDotAll.isSelected() ? Pattern.DOTALL : 0)
                 | (jCheckBoxCaseIn.isSelected() ? Pattern.CASE_INSENSITIVE : 0);
