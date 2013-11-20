@@ -2,8 +2,6 @@ package jlx.tools.research.frame;
 
 import java.util.List;
 
-import jlx.tools.research.vo.CompanyInfo;
-
 /**
  * {class description}
  * <br>
@@ -22,12 +20,12 @@ import jlx.tools.research.vo.CompanyInfo;
  * -------------------------------------------<br>
  * <br>
  */
-public interface IMainFrame {
+public interface IMainFrame<T> {
     /**
      * {更新內容 }.
      * 
      * @param collection
      */
-    public void updateAreaTxt(final List<CompanyInfo> collection);
+    public void updateAreaTxt(final List<T>  collection);
 
 }

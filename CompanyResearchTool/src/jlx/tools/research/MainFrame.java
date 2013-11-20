@@ -25,7 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import jlx.tools.research.frame.IMainFrame;
+import jlx.tools.research.frame.IHotKeyFrame;
 import jlx.tools.research.frame.NullFrame;
 import jlx.tools.research.frame.OwnFrame;
 import jlx.tools.research.pop.AlertMgr;
@@ -54,31 +54,32 @@ import jlx.tools.research.zhaopin.CorSearcher;
  *          -------------------------------------------<br>
  *          <br>
  */
-public class MainFrame extends JFrame implements IMainFrame, ItemListener {
+public class MainFrame extends JFrame implements IHotKeyFrame<CompanyInfo>, ItemListener {
 
-    private JPanel m_contentPane;
+    private final JPanel m_contentPane;
     /**
      * <code>collection</code> - {当前已经显示的公司信息}.
      */
     Collection<CompanyInfo> all = null;
     private final Object lock = new Object();
-    private TaskManager taskManager = new TaskManager(this);
-    private JButton m_button_start;
-    private JButton m_button_stop;
-    private JTextArea m_textArea;
-    private JScrollPane m_scrollPane;
-    private JPanel m_panel_chkboxs;
-    private JCheckBox m_checkBox_check;
-    private OwnFrame ownFrame = new OwnFrame();
-    private NullFrame nullFrame = new NullFrame();
-    private BossKeyHandler bossKeyHandler = new BossKeyHandler();
-    private JCheckBox m_chkShowPop;
+    private final TaskManager taskManager = new TaskManager(this);
+    private final JButton m_button_start;
+    private final JButton m_button_stop;
+    private final JTextArea m_textArea;
+    private final JScrollPane m_scrollPane;
+    private final JPanel m_panel_chkboxs;
+    private final JCheckBox m_checkBox_check;
+    private final OwnFrame ownFrame = new OwnFrame();
+    private final NullFrame nullFrame = new NullFrame();
+    private final BossKeyHandler bossKeyHandler = new BossKeyHandler();
+    private final JCheckBox m_chkShowPop;
 
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
                     MainFrame frame = new MainFrame();
@@ -97,14 +98,14 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
         setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/javax/swing/plaf/metal/icons/ocean/file.gif")));
         addWindowListener(new WindowAdapter() {
             @Override
-            public void windowOpened(WindowEvent e) {
+            public void windowOpened(final WindowEvent e) {
                 // 做一些初始化动作
                 onWindowOpened();
             }
         });
         addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(ComponentEvent e) {
+            public void componentResized(final ComponentEvent e) {
                 onResize();
             }
         });
@@ -120,7 +121,8 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
         m_contentPane.add(m_button_stop);
         m_button_stop.setEnabled(false);
         m_button_stop.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
                 stopFresh();
             }
 
@@ -131,7 +133,8 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
         m_button_start.setBounds(670, 10, 116, 23);
         m_contentPane.add(m_button_start);
         m_button_start.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
                 startFresh();
 
             }
@@ -240,7 +243,8 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
         JCheckBox checkBox_all = new JCheckBox("全选");
         checkBox_all.setFont(new Font("宋体", Font.PLAIN, 12));
         checkBox_all.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
+            @Override
+            public void itemStateChanged(final ItemEvent e) {
                 Object source = e.getSource();
                 if(source instanceof JCheckBox){
                     JCheckBox box = (JCheckBox) source;
@@ -258,7 +262,8 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
         
         JButton button = new JButton("我的列表");
         button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
                 ownFrame.setVisible(!ownFrame.isVisible());
             }
         });
@@ -268,7 +273,8 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
         
         JButton buttonNullList = new JButton("无归属");
         buttonNullList.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
                 nullFrame.setVisible(!nullFrame.isVisible());
             }
         });
@@ -341,14 +347,14 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
     /**
      * {method description}.
      */
-    private void chkboxEnabled(boolean isEnabled) {
+    private void chkboxEnabled(final boolean isEnabled) {
         Component[] cs = m_panel_chkboxs.getComponents();
         for (int i = 0; i < cs.length; i++) {
             JCheckBox c = (JCheckBox)cs[i];
             c.setEnabled(isEnabled);
         }
     }
-    private void chkboxAllSelected(boolean selected) {
+    private void chkboxAllSelected(final boolean selected) {
         Component[] cs = m_panel_chkboxs.getComponents();
         for (int i = 0; i < cs.length; i++) {
             JCheckBox c = (JCheckBox)cs[i];
@@ -361,7 +367,7 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
      * 
      * @param web
      */
-    private void addTask(String web) {
+    private void addTask(final String web) {
         taskManager.addTask(new TaskInfo(web, ConfigUtil.getDefaultURLByKey(web)));
         //判断是否加入首页的逻辑
         String homeKey = web + ".home";
@@ -373,7 +379,7 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
      * {method description}.
      * @param name
      */
-    private void removeTask(String web) {
+    private void removeTask(final String web) {
         taskManager.removeTask(new TaskInfo(web, ConfigUtil.getDefaultURLByKey(web)));
         // 判断是否去掉首页的逻辑
         String homeKey = web + ".home";
@@ -387,6 +393,7 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
      * 
      * @param collection
      */
+    @Override
     public void updateAreaTxt(final List<CompanyInfo> collection) {
         synchronized (lock) {
             List<CompanyInfo> needAdd = new ArrayList<CompanyInfo>();
@@ -444,12 +451,12 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
      * @param collection
      * @param needAdd
      */
-    private void all2List(Collection<CompanyInfo> collection, List<CompanyInfo> needAdd) {
+    private void all2List(final Collection<CompanyInfo> collection, List<CompanyInfo> needAdd) {
         if (all == null) {
             all = new ArrayList<CompanyInfo>();
         }
         for (Iterator<CompanyInfo> iterator = collection.iterator(); iterator.hasNext();) {
-            CompanyInfo companyInfo = (CompanyInfo) iterator.next();
+            CompanyInfo companyInfo = iterator.next();
             if (!all.contains(companyInfo)) {
                 needAdd.add(companyInfo);
                 all.add(companyInfo);
@@ -479,7 +486,7 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     @Override
-    public void itemStateChanged(ItemEvent e) {
+    public void itemStateChanged(final ItemEvent e) {
         Object source = e.getSource();
         if(source instanceof JCheckBox){
             JCheckBox box = (JCheckBox) source;
@@ -494,6 +501,7 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
     /**
      *  老板键操作，隐藏窗口
      */
+    @Override
     public void bossKeyAction() {
         bossKeyHandler.handle(this);
     }
@@ -508,7 +516,7 @@ public class MainFrame extends JFrame implements IMainFrame, ItemListener {
          */
         private boolean nullWindowVisible;
         
-        public void handle(MainFrame mainFrame){
+        public void handle(final MainFrame mainFrame){
             if(mainFrame.isVisible()){
                 ownWindowVisible = ownFrame.isVisible();
                 nullWindowVisible = nullFrame.isVisible();
