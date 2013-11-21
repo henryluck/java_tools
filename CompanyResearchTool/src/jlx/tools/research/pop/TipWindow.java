@@ -20,11 +20,11 @@ public class TipWindow extends JDialog{
 	private static final long serialVersionUID = 8541659783234673950L;
 	private static Dimension dim;   
     private int x,  y;   
-    private int width,  height;   
+    private final int width,  height;   
     private static Insets screenInsets;     
   
    
-    public TipWindow(int width,int height){ 
+    public TipWindow(final int width,final int height){ 
     	this.width=width;
     	this.height=height;
         dim = Toolkit.getDefaultToolkit().getScreenSize();   

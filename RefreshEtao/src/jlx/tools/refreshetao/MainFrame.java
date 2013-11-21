@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,7 +26,6 @@ import jlx.tools.research.frame.IHotKeyFrame;
 import jlx.tools.research.frame.IMainFrame;
 import jlx.tools.research.frame.NullFrame;
 import jlx.tools.research.frame.OwnFrame;
-import jlx.tools.research.pop.AlertMgr;
 import jlx.tools.research.task.TaskManager;
 import jlx.tools.research.utils.DebugLogger;
 import jlx.tools.research.utils.FormatUtil;
@@ -233,7 +231,8 @@ public class MainFrame extends JFrame implements IHotKeyFrame<Goods> {
             Goods gs = list.get(i);
             buffer.append(gs.title);
             buffer.append("\n").append(gs.content);
-            AlertMgr.pop(buffer.toString(),new ImageIcon(gs.image));
+            
+            GoodsAlertMgr.pop(buffer.toString(),gs.image);
 
         }
     }
