@@ -29,7 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
-import jlx.tools.research.pop.TipWindow;
+import jlx.util.pop.TipWindow;
 
 public class GoodsAlertMgr {
     private Map<String, String> feaMap = null;

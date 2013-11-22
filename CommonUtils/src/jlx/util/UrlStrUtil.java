@@ -1,4 +1,6 @@
-package jlx.tools.research.utils;
+package jlx.util;
+
+import jlx.util.log.DebugLogger;
 
 /**
  * {class description}
@@ -24,7 +26,7 @@ public class UrlStrUtil {
      * @param url
      * @return
      */
-    public static String getBaseUri(String url){
+    public static String getBaseUri(final String url){
         if(url == null){
             return null;
         }
@@ -35,14 +37,14 @@ public class UrlStrUtil {
      * @param url
      * @return
      */
-    public static String getCurrentUri(String url){
+    public static String getCurrentUri(final String url){
         if(url == null){
             return null;
         }
         return RegexUtils.getMatchString(url, "(http://.*/)");
     }
     
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         DebugLogger.log(UrlStrUtil.getCurrentUri("http://search.51job.com/list/co,c,2532882,0000,10,1.html"));
     }
 }

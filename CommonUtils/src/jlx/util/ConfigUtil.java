@@ -1,4 +1,4 @@
-package jlx.tools.research.utils;
+package jlx.util;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

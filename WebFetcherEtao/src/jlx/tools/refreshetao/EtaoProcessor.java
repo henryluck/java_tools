@@ -1,7 +1,5 @@
 package jlx.tools.refreshetao;
 
-import static jlx.tools.research.utils.RegexUtils.getMatchList;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -11,10 +9,10 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import jlx.tools.research.utils.DebugLogger;
-import jlx.tools.research.utils.RegexUtils;
+import jlx.tools.webfetcher.processor.IProcessor;
+import jlx.tools.webfetcher.task.BaseConnInfo;
+import jlx.util.RegexUtils;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -34,7 +32,7 @@ import org.jsoup.nodes.Document;
  *          -------------------------------------------<br>
  *          <br>
  */
-public class EtaoProcessor {
+public class EtaoProcessor implements IProcessor<GoodsVO>{
     
    private final String url = "http://www.etao.com/";
    private final String itemRegex = "<h3 class=\"feed-title\">(.*?)<div class=\"feed-data clearfix\">";
@@ -44,55 +42,10 @@ public class EtaoProcessor {
    public String imageUrlRegex = "src=\"(.*?)\"";
     
     
-    /**
-     * 获得公司信息
-     * 
-     * @param key
-     * @param url
-     * @return
-     * @throws Exception
-     */
-    public List<Goods> process() {
-        try {
-            long start = System.currentTimeMillis();
-
-            List<Goods> result = new ArrayList<Goods>();
-            Connection conn = Jsoup.connect(url);
-            // 加上agent，防止返回wap页面的内容
-            conn.userAgent("Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)");
-            conn.timeout(10000);
-            conn.followRedirects(true);
-            // long t1 = System.currentTimeMillis();
-            Document doc1 = conn.get();
-            // System.out.println("哈哈：" + (System.currentTimeMillis() - start));
-            String page = doc1.html();
-
-            List<String> alist = getMatchList(page, itemRegex);
-
-            // 为main函数加点日志
-            if (System.getProperty("TestMain") != null) {
-                System.out.println(page);
-                System.out.println("网站匹配列表：" + alist);
-            }
-            
-            if (alist == null || alist.isEmpty()) {
-                System.err.println("获得网站列表失败，请联系mike:henry.luck@gmail.com！");
-                return result;
-            }
-            result = parse(alist);
-            DebugLogger.log("fresh web 商品数量：" + result.size() + ",用时："
-                    + (System.currentTimeMillis() - start));
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private List<Goods> parse(final List<String> alist) {
-        List<Goods> result = new ArrayList<EtaoProcessor.Goods>();
+    private List<GoodsVO> parse(final List<String> alist) {
+        List<GoodsVO> result = new ArrayList<GoodsVO>();
         for (String item : alist) {
-            Goods gs = new Goods();
+            GoodsVO gs = new GoodsVO();
             gs.content = RegexUtils.getMatchString(item,contentRegex);
             gs.imageUrl = RegexUtils.getMatchString(item,imageUrlRegex);
             gs.title = RegexUtils.getMatchString(item,titleRegex);
@@ -122,38 +75,29 @@ public class EtaoProcessor {
         
         return image;
     }
+    
+    @Override
+    public List<GoodsVO> process(final String page, final BaseConnInfo connInfo) {
+        try {
+            List<GoodsVO> result = new ArrayList<GoodsVO>();
 
-    public static void main(final String[] args) throws Exception {
-        System.setProperty("TestMain", "true");
-        new EtaoProcessor().process();
-//        printPage("http://www.51job.com/tianjin");
-    }
-    class Goods{
-        public String title;
-        public String content;
-        public String url;
-        public String imageUrl;
-        public BufferedImage image;
-        /* (non-Javadoc) 为了collection使用contains方法比较使用
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
-        @Override
-        public boolean equals(final Object obj) {
-            if(obj instanceof Goods ){
-                Goods gs = (Goods)obj;
-                if(obj !=null && gs.url.equals(this.url)){
-                    return true;
-                }
+            List<String> alist = RegexUtils.getMatchList(page, itemRegex);
+
+            // 为main函数加点日志
+            if (System.getProperty("TestMain") != null) {
+                System.out.println(page);
+                System.out.println("网站匹配列表：" + alist);
             }
-            return false;
+            
+            if (alist == null || alist.isEmpty()) {
+                System.err.println("获得网站列表失败，请联系mike:henry.luck@gmail.com！");
+                return result;
+            }
+            result = parse(alist);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        /* (non-Javadoc)
-         * @see java.lang.Object#hashCode()
-         */
-        @Override
-        public int hashCode() {
-            // TODO Auto-generated method stub
-            return super.hashCode();
-        }
+        return null;
     }
 }

@@ -21,14 +21,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import jlx.tools.refreshetao.EtaoProcessor.Goods;
-import jlx.tools.research.frame.IHotKeyFrame;
-import jlx.tools.research.frame.IMainFrame;
-import jlx.tools.research.frame.NullFrame;
-import jlx.tools.research.frame.OwnFrame;
-import jlx.tools.research.task.TaskManager;
-import jlx.tools.research.utils.DebugLogger;
-import jlx.tools.research.utils.FormatUtil;
+import jlx.tools.webfetcher.IUpdateTextFrame;
+import jlx.tools.webfetcher.task.BaseConnInfo;
+import jlx.tools.webfetcher.task.HttpTask;
+import jlx.tools.webfetcher.task.TaskManager;
+import jlx.util.string.FormatUtil;
 
 /**
  * {class description} <br>
@@ -47,23 +44,20 @@ import jlx.tools.research.utils.FormatUtil;
  *          -------------------------------------------<br>
  *          <br>
  */
-public class MainFrame extends JFrame implements IHotKeyFrame<Goods> {
+public class MainFrame extends JFrame implements IUpdateTextFrame<GoodsVO> {
 
+    private final String url = "http://www.etao.com";
     private final JPanel m_contentPane;
     /**
      * <code>collection</code> - {当前已经显示的公司信息}.
      */
-    Collection<Goods> all = null;
+    Collection<GoodsVO> all = null;
     private final Object lock = new Object();
-    private final TaskManager taskManager = new TaskManager(this);
+    private final TaskManager<GoodsVO> taskManager = new TaskManager<GoodsVO>(this);
     private final JButton m_button_start;
     private final JButton m_button_stop;
     private final JTextArea m_textArea;
     private final JScrollPane m_scrollPane;
-    private final OwnFrame ownFrame = new OwnFrame();
-    private final NullFrame nullFrame = new NullFrame();
-    private final BossKeyHandler bossKeyHandler = new BossKeyHandler();
-    private Runner runner;
 
     /**
      * Launch the application.
@@ -139,11 +133,16 @@ public class MainFrame extends JFrame implements IHotKeyFrame<Goods> {
 
         m_textArea = new JTextArea();
         m_scrollPane.setViewportView(m_textArea);
+        //初始化任务
+        BaseConnInfo connInfo = new BaseConnInfo();
+        connInfo.setUrl(this.url);
+        HttpTask<GoodsVO> task = new HttpTask<GoodsVO>(connInfo, new EtaoProcessor());
+        taskManager.addTask(task);
 
     }
 
     private void stopFresh() {
-        runner.stop();
+        taskManager.stop();
 
         m_button_stop.setEnabled(false);
         m_button_start.setEnabled(true);
@@ -170,31 +169,11 @@ public class MainFrame extends JFrame implements IHotKeyFrame<Goods> {
      * {开始刷新}.
      */
     public void startFresh() {
-        // ###########################################新加的时候修改这个地方##########################################
-        // 加入任务列表
-        /*
-         * taskManager.addTask(new TaskInfo("51job",m_textField_51.getText())); taskManager.addTask(new
-         * TaskInfo("taida",m_textField_taida.getText())); taskManager.addTask(new
-         * TaskInfo("yicai",m_textField_yicai.getText())); taskManager.addTask(new
-         * TaskInfo("chinahr",m_textField_chinahr.getText())); taskManager.addTask(new
-         * TaskInfo("ganji",m_textField_ganji.getText()));
-         */
-        // taskManager.addTask(new TaskInfo("51job",ConfigUtil.getDefaultURLByKey("51job")));
-        // taskManager.addTask(new TaskInfo("taida",ConfigUtil.getDefaultURLByKey("taida")));
-        // taskManager.addTask(new TaskInfo("yicai",ConfigUtil.getDefaultURLByKey("yicai")));
-        // taskManager.addTask(new TaskInfo("chinahr",ConfigUtil.getDefaultURLByKey("chinahr")));
-        // //taskManager.addTask(new TaskInfo("58tc",ConfigUtil.getDefaultURLByKey("58tc")));
-        // taskManager.addTask(new TaskInfo("01hr",ConfigUtil.getDefaultURLByKey("01hr")));
-
-        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<新加的时候修改这个地方<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
         m_button_stop.setEnabled(true);
         m_button_start.setEnabled(false);
         this.invalidate();
-
-        this.runner = new Runner(this);
-        new Thread(runner).start();
-
+        
+        taskManager.start();
     }
 
     /**
@@ -203,9 +182,9 @@ public class MainFrame extends JFrame implements IHotKeyFrame<Goods> {
      * @param collection
      */
     @Override
-    public void updateAreaTxt(final List<Goods> collection) {
+    public void updateAreaTxt(final List<GoodsVO> collection) {
         synchronized (lock) {
-            List<Goods> needAdd = new ArrayList<Goods>();
+            List<GoodsVO> needAdd = new ArrayList<GoodsVO>();
 
             all2List(collection, needAdd);
             // 没有归属的公司pop提示框
@@ -213,7 +192,7 @@ public class MainFrame extends JFrame implements IHotKeyFrame<Goods> {
             // 写数据
             StringBuffer buf = new StringBuffer();
             for (Iterator iterator = needAdd.iterator(); iterator.hasNext();) {
-                Goods gs = (Goods) iterator.next();
+                GoodsVO gs = (GoodsVO) iterator.next();
                 String name = FormatUtil.addBlank(gs.title);
                 buf.append("\n").append(name).append("\t").append(gs.content).append("\t").append(gs.url).append("\t")
                     .append(gs.imageUrl);
@@ -224,11 +203,11 @@ public class MainFrame extends JFrame implements IHotKeyFrame<Goods> {
     }
 
     // 过滤没有归属的新公司提示出来
-    public void popNoneOwner(final List<Goods> list) {
+    public void popNoneOwner(final List<GoodsVO> list) {
         
         for (int i = 0; i < list.size(); i++) {
             StringBuffer buffer = new StringBuffer();
-            Goods gs = list.get(i);
+            GoodsVO gs = list.get(i);
             buffer.append(gs.title);
             buffer.append("\n").append(gs.content);
             
@@ -243,12 +222,12 @@ public class MainFrame extends JFrame implements IHotKeyFrame<Goods> {
      * @param collection
      * @param needAdd
      */
-    private void all2List(final Collection<Goods> collection, final List<Goods> needAdd) {
+    private void all2List(final Collection<GoodsVO> collection, final List<GoodsVO> needAdd) {
         if (all == null) {
-            all = new ArrayList<Goods>();
+            all = new ArrayList<GoodsVO>();
         }
-        for (Iterator<Goods> iterator = collection.iterator(); iterator.hasNext();) {
-            Goods gs = iterator.next();
+        for (Iterator<GoodsVO> iterator = collection.iterator(); iterator.hasNext();) {
+            GoodsVO gs = iterator.next();
             if (!all.contains(gs)) {
                 needAdd.add(gs);
                 all.add(gs);
@@ -259,76 +238,5 @@ public class MainFrame extends JFrame implements IHotKeyFrame<Goods> {
     private void onResize() {
         m_textArea.setSize(this.getWidth() - 35, this.getHeight() - 113);
         m_scrollPane.setSize(this.getWidth() - 35, this.getHeight() - 113);
-    }
-
-    /**
-     * 老板键操作，隐藏窗口
-     */
-    @Override
-    public void bossKeyAction() {
-        bossKeyHandler.handle(this);
-    }
-
-    class BossKeyHandler {
-        /**
-         * <code>ownWindowVisble</code> - {记录我的列表窗口的visible状态，再次点击快捷键的时候恢复使用}.
-         */
-        private boolean ownWindowVisible;
-
-        /**
-         * <code>ownWindowVisble</code> - {记录列表窗口的visible状态，再次点击快捷键的时候恢复使用}.
-         */
-        private boolean nullWindowVisible;
-
-        public void handle(final MainFrame mainFrame) {
-            if (mainFrame.isVisible()) {
-                ownWindowVisible = ownFrame.isVisible();
-                nullWindowVisible = nullFrame.isVisible();
-
-                mainFrame.setVisible(false);
-                ownFrame.setVisible(false);
-                nullFrame.setVisible(false);
-            } else {
-                mainFrame.setVisible(true);
-                ownFrame.setVisible(ownWindowVisible);
-                nullFrame.setVisible(nullWindowVisible);
-            }
-
-        }
-    }
-
-    class Runner implements Runnable {
-        private boolean enable = true;
-        private final IMainFrame<Goods> mainFrame;
-
-        public Runner(final IMainFrame<Goods> mainFrame) {
-            this.mainFrame = mainFrame;
-        }
-
-        public void stop() {
-            this.enable = false;
-        }
-
-        @Override
-        public void run() {
-            EtaoProcessor processor = new EtaoProcessor();
-            while (enable) {
-                try {
-                    long start = System.currentTimeMillis();
-
-                    List<Goods> results = processor.process();
-                    // 刷新内容
-                    if (results != null) {
-                        mainFrame.updateAreaTxt(results);
-                    }
-
-                    DebugLogger.log("一次用时：" + (System.currentTimeMillis() - start));
-                    Thread.sleep(10000);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 }

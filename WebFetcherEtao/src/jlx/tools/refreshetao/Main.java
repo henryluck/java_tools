@@ -12,8 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import jlx.tools.research.SystemHotKeyManager;
-import jlx.tools.research.utils.SystemOutSetter;
+import jlx.util.hotkey.SystemHotKeyManager;
+import jlx.util.log.SystemOutSetter;
 
 /**
  *
@@ -36,7 +36,7 @@ public class Main {
                     jFrame.setVisible(true);
                     //初始化系统快捷键
                     SystemHotKeyManager key = new SystemHotKeyManager();
-                    key.initHotkey(jFrame);
+                    key.addHotkey(new HotKeyHandler(jFrame));
                 }
 
                 
@@ -75,10 +75,6 @@ public class Main {
         frame.add(new JButton("按钮"), BorderLayout.SOUTH);
         frame.setSize(400, 300);
         frame.setVisible(true);
-
-    }
-    
-    public static void main2(final String[] args) {
 
     }
 

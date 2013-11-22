@@ -1,4 +1,4 @@
-package jlx.tools.research.utils;
+package jlx.util.string;
 
 /**
  * {class description}
@@ -6,20 +6,10 @@ package jlx.tools.research.utils;
  *  
  * <p>
  * Create on : 2012-9-6<br>
- * <p>
- * </p>
- * <br>
- * @version CompanyResearchTool v1.0
- * <p>
- *<br>
- * <strong>Modify History:</strong><br>
- * user     modify_date    modify_content<br>
- * -------------------------------------------<br>
- * <br>
  */
 public class FormatUtil {
-    //显示对齐，公司名称补充空格
-    public static String addBlank(String name){
+    //显示对齐，名称补充空格
+    public static String addBlank(final String name){
         int no = 25-name.length();
         if(no<=0){
             return name;

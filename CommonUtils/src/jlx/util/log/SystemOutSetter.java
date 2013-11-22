@@ -1,10 +1,8 @@
-package jlx.tools.research.utils;
+package jlx.util.log;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-
-import jlx.tools.research.Main;
 
 /**
  * {class description}
@@ -26,7 +24,7 @@ import jlx.tools.research.Main;
  */
 public class SystemOutSetter {
     public static String getRealPath() {
-        String realPath = Main.class.getClassLoader().getResource("").getFile();
+        String realPath = SystemOutSetter.class.getClassLoader().getResource("").getFile();
         java.io.File file = new java.io.File(realPath);
         realPath = file.getAbsolutePath();
         try {
@@ -42,7 +40,7 @@ public class SystemOutSetter {
             setSystOut("log.log");
         }
     }
-    public static void setSystOut(String logFile) {
+    public static void setSystOut(final String logFile) {
         PrintStream myout;
         try {
             DebugLogger.log(getRealPath());

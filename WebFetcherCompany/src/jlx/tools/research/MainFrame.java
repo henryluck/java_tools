@@ -25,17 +25,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import jlx.tools.research.frame.IHotKeyFrame;
 import jlx.tools.research.frame.NullFrame;
 import jlx.tools.research.frame.OwnFrame;
 import jlx.tools.research.pop.AlertMgr;
 import jlx.tools.research.task.TaskInfo;
-import jlx.tools.research.task.TaskManager;
-import jlx.tools.research.utils.ConfigUtil;
-import jlx.tools.research.utils.DebugLogger;
-import jlx.tools.research.utils.FormatUtil;
 import jlx.tools.research.vo.CompanyInfo;
 import jlx.tools.research.zhaopin.CorSearcher;
+import jlx.tools.webfetcher.IUpdateTextFrame;
+import jlx.tools.webfetcher.task.HttpTask;
+import jlx.tools.webfetcher.task.TaskManager;
+import jlx.util.ConfigUtil;
+import jlx.util.log.DebugLogger;
+import jlx.util.string.FormatUtil;
 
 /**
  * {class description} <br>
@@ -54,7 +55,7 @@ import jlx.tools.research.zhaopin.CorSearcher;
  *          -------------------------------------------<br>
  *          <br>
  */
-public class MainFrame extends JFrame implements IHotKeyFrame<CompanyInfo>, ItemListener {
+public class MainFrame extends JFrame implements IUpdateTextFrame<CompanyInfo>, ItemListener {
 
     private final JPanel m_contentPane;
     /**
@@ -62,7 +63,7 @@ public class MainFrame extends JFrame implements IHotKeyFrame<CompanyInfo>, Item
      */
     Collection<CompanyInfo> all = null;
     private final Object lock = new Object();
-    private final TaskManager taskManager = new TaskManager(this);
+    private final TaskManager<CompanyInfo> taskManager = new TaskManager<CompanyInfo>(this);
     private final JButton m_button_start;
     private final JButton m_button_stop;
     private final JTextArea m_textArea;
@@ -368,11 +369,15 @@ public class MainFrame extends JFrame implements IHotKeyFrame<CompanyInfo>, Item
      * @param web
      */
     private void addTask(final String web) {
-        taskManager.addTask(new TaskInfo(web, ConfigUtil.getDefaultURLByKey(web)));
+        ZPWebConnInfo connInfo = new ZPWebConnInfo();
+        connInfo.setWebKey(web);
+        connInfo.setUrl(ConfigUtil.getDefaultURLByKey(web))
+        taskManager.addTask(new HttpTask(web, ));
         //判断是否加入首页的逻辑
         String homeKey = web + ".home";
         if (ConfigUtil.getDefaultURLByKey(homeKey) != null) {
-            taskManager.addTask(new TaskInfo(homeKey, ConfigUtil.getDefaultURLByKey(homeKey)));
+            
+            taskManager.addTask(new HttpTask<CompanyInfo>(homeKey, ConfigUtil.getDefaultURLByKey(homeKey)));
         }
     }
     /**
