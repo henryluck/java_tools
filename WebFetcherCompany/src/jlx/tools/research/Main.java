@@ -12,7 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import jlx.tools.research.utils.SystemOutSetter;
+import jlx.util.hotkey.SystemHotKeyManager;
+import jlx.util.log.SystemOutSetter;
 
 /**
  *
@@ -20,12 +21,13 @@ import jlx.tools.research.utils.SystemOutSetter;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         
         try {
 //            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             // UIManager.setLookAndFeel(new NimbusLookAndFeel());
             SwingUtilities.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                   //重定向System.out
                     SystemOutSetter.setSystOut();
@@ -34,9 +36,8 @@ public class Main {
                     jFrame.setVisible(true);
                     //初始化系统快捷键
                     SystemHotKeyManager key = new SystemHotKeyManager();
-                    key.initHotkey(jFrame);
+                    key.addHotkey(new HotKeyHandler(jFrame));
                 }
-
                 
             });
         } catch (Exception ex) {
@@ -49,14 +50,14 @@ public class Main {
      * 
      * @param args
      */
-    public static void main1(String[] args) {
+    public static void main1(final String[] args) {
         final JFrame frame = new JFrame();
         UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
         JComboBox combo = new JComboBox(lafs);
         combo.addItemListener(new ItemListener() {
 
             @Override
-            public void itemStateChanged(ItemEvent e) {
+            public void itemStateChanged(final ItemEvent e) {
                 if (ItemEvent.SELECTED == e.getStateChange()) {
                     UIManager.LookAndFeelInfo info = (UIManager.LookAndFeelInfo) e.getItem();
                     try {
@@ -76,7 +77,7 @@ public class Main {
 
     }
     
-    public static void main2(String[] args) {
+    public static void main2(final String[] args) {
 
     }
 

@@ -12,9 +12,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import jlx.tools.research.utils.FormatUtil;
 import jlx.tools.research.vo.CompanyInfo;
 import jlx.tools.research.zhaopin.WebRoboter;
+import jlx.util.string.FormatUtil;
 
 /**
  * {class description}
@@ -35,15 +35,16 @@ import jlx.tools.research.zhaopin.WebRoboter;
  */
 public class OwnFrame extends JFrame {
 
-    private JPanel m_contentPane;
+    private final JPanel m_contentPane;
     private final Object lock = new Object();
-    private JTextArea m_textArea;
+    private final JTextArea m_textArea;
 
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
                     OwnFrame frame = new OwnFrame();

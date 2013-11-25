@@ -2,9 +2,9 @@ package jlx.tools.research.zhaopin;
 
 import java.util.List;
 
-import jlx.tools.research.utils.DebugLogger;
-import jlx.tools.research.utils.RegexUtils;
 import jlx.tools.research.vo.CompanyInfo;
+import jlx.util.RegexUtils;
+import jlx.util.log.DebugLogger;
 
 import org.apache.commons.httpclient.HttpClient;
 
@@ -27,7 +27,7 @@ import org.apache.commons.httpclient.HttpClient;
  */
 public class CorSearcher {
     
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         String comName = "天津聚龙嘉华投资集团有限公司";
         comName = RegexUtils.getMatchString(comName, "([^(（]*)");
         
@@ -40,7 +40,7 @@ public class CorSearcher {
      * 
      * @param needAdd
      */
-    public static void search(List<CompanyInfo> needAdd) {
+    public static void search(final List<CompanyInfo> needAdd) {
         WebRoboter robot = new WebRoboter();
         try {
             HttpClient client = robot.login();
@@ -58,7 +58,7 @@ public class CorSearcher {
      * @param com
      * @return 如果有人负责返回false
      */
-    public static boolean search(CompanyInfo com) {
+    public static boolean search(final CompanyInfo com) {
         WebRoboter robot = new WebRoboter();
         try {
             HttpClient client = robot.login();
@@ -75,7 +75,7 @@ public class CorSearcher {
      * @param com
      * @return 如果有人负责返回false
      */
-    public static boolean search(CompanyInfo com, HttpClient client) {
+    public static boolean search(final CompanyInfo com, final HttpClient client) {
         long start = System.currentTimeMillis();
         WebRoboter robot = new WebRoboter();
         try {
@@ -118,7 +118,7 @@ public class CorSearcher {
      * @param com
      * @return
      */
-    private static String prcessName(CompanyInfo com) {
+    private static String prcessName(final CompanyInfo com) {
         //做一些字符处理
         String comName = com.getName();
         //全角括号改半角
@@ -146,21 +146,21 @@ public class CorSearcher {
      * @param delStr
      * @return
      */
-    private static String delStr2End(String src,String delStr){
+    private static String delStr2End(final String src,final String delStr){
         int index = src.indexOf(delStr);
         if(index != -1){
             return src.substring(0, index);
         }
         return src;
     }
-    private static String delStrFromStart(String src,String delStr){
+    private static String delStrFromStart(final String src,final String delStr){
         if(src.startsWith(delStr)){
             return src.substring(delStr.length());
         }
         return src;
     }
     
-    private static String loadConvert (char[] in, int off, int len, char[] convtBuf) {
+    private static String loadConvert (final char[] in, int off, final int len, char[] convtBuf) {
         if (convtBuf.length < len) {
             int newLen = len * 2;
             if (newLen < 0) {
@@ -209,7 +209,7 @@ public class CorSearcher {
                     out[outLen++] = aChar;
                 }
             } else {
-            out[outLen++] = (char)aChar;
+            out[outLen++] = aChar;
             }
         }
         return new String (out, 0, outLen);

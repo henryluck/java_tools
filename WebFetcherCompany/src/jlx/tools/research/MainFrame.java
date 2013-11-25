@@ -28,7 +28,7 @@ import javax.swing.border.EmptyBorder;
 import jlx.tools.research.frame.NullFrame;
 import jlx.tools.research.frame.OwnFrame;
 import jlx.tools.research.pop.AlertMgr;
-import jlx.tools.research.task.TaskInfo;
+import jlx.tools.research.procesor.ZPWebPageProcessor;
 import jlx.tools.research.vo.CompanyInfo;
 import jlx.tools.research.zhaopin.CorSearcher;
 import jlx.tools.webfetcher.IUpdateTextFrame;
@@ -70,9 +70,8 @@ public class MainFrame extends JFrame implements IUpdateTextFrame<CompanyInfo>, 
     private final JScrollPane m_scrollPane;
     private final JPanel m_panel_chkboxs;
     private final JCheckBox m_checkBox_check;
-    private final OwnFrame ownFrame = new OwnFrame();
-    private final NullFrame nullFrame = new NullFrame();
-    private final BossKeyHandler bossKeyHandler = new BossKeyHandler();
+    public final OwnFrame ownFrame = new OwnFrame();
+    public final NullFrame nullFrame = new NullFrame();
     private final JCheckBox m_chkShowPop;
 
     /**
@@ -368,28 +367,31 @@ public class MainFrame extends JFrame implements IUpdateTextFrame<CompanyInfo>, 
      * 
      * @param web
      */
-    private void addTask(final String web) {
-        ZPWebConnInfo connInfo = new ZPWebConnInfo();
-        connInfo.setWebKey(web);
-        connInfo.setUrl(ConfigUtil.getDefaultURLByKey(web))
-        taskManager.addTask(new HttpTask(web, ));
+    private void addTask(final String webKey) {
+        taskManager.addTask(newTask(webKey));
         //判断是否加入首页的逻辑
-        String homeKey = web + ".home";
+        String homeKey = webKey + ".home";
         if (ConfigUtil.getDefaultURLByKey(homeKey) != null) {
-            
-            taskManager.addTask(new HttpTask<CompanyInfo>(homeKey, ConfigUtil.getDefaultURLByKey(homeKey)));
+            taskManager.addTask(newTask(homeKey));
         }
+    }
+    //组装一个task
+    private HttpTask<CompanyInfo> newTask(final String webKey){
+        ZPWebConnInfo connInfo = new ZPWebConnInfo();
+        connInfo.setWebKey(webKey);
+        connInfo.setUrl(ConfigUtil.getDefaultURLByKey(webKey));
+        return new HttpTask<CompanyInfo>(connInfo, new ZPWebPageProcessor());
     }
     /**
      * {method description}.
      * @param name
      */
     private void removeTask(final String web) {
-        taskManager.removeTask(new TaskInfo(web, ConfigUtil.getDefaultURLByKey(web)));
+        taskManager.removeTask(newTask(web));
         // 判断是否去掉首页的逻辑
         String homeKey = web + ".home";
         if (ConfigUtil.getDefaultURLByKey(homeKey) != null) {
-            taskManager.removeTask(new TaskInfo(homeKey, ConfigUtil.getDefaultURLByKey(homeKey)));
+            taskManager.removeTask(newTask(homeKey));
         }
     }
 
@@ -500,41 +502,6 @@ public class MainFrame extends JFrame implements IUpdateTextFrame<CompanyInfo>, 
             }else{
                 removeTask(box.getName());
             }
-        }
-    }
-
-    /**
-     *  老板键操作，隐藏窗口
-     */
-    @Override
-    public void bossKeyAction() {
-        bossKeyHandler.handle(this);
-    }
-    class BossKeyHandler{
-        /**
-         * <code>ownWindowVisble</code> - {记录我的列表窗口的visible状态，再次点击快捷键的时候恢复使用}.
-         */
-        private boolean ownWindowVisible;
-        
-        /**
-         * <code>ownWindowVisble</code> - {记录列表窗口的visible状态，再次点击快捷键的时候恢复使用}.
-         */
-        private boolean nullWindowVisible;
-        
-        public void handle(final MainFrame mainFrame){
-            if(mainFrame.isVisible()){
-                ownWindowVisible = ownFrame.isVisible();
-                nullWindowVisible = nullFrame.isVisible();
-                
-                mainFrame.setVisible(false);
-                ownFrame.setVisible(false);
-                nullFrame.setVisible(false);
-            }else{
-                mainFrame.setVisible(true);
-                ownFrame.setVisible(ownWindowVisible);
-                nullFrame.setVisible(nullWindowVisible);
-            }
-            
         }
     }
 }

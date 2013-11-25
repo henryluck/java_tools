@@ -68,7 +68,7 @@ public class SystemHotKeyManager implements HotkeyListener {
         HotkeyTest test = new SystemHotKeyManager.HotkeyTest();
         key.addHotkey(test);
 
-        // 下面模拟长时间执行的任务
+        // 下面模拟长时间执行的任务 
         while (true) {
             try {
                 Thread.sleep(10000);

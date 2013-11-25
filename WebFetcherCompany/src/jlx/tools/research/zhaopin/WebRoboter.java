@@ -2,8 +2,8 @@ package jlx.tools.research.zhaopin;
 
 import java.net.URLEncoder;
 
-import jlx.tools.research.utils.DebugLogger;
-import jlx.tools.research.utils.RegexUtils;
+import jlx.util.RegexUtils;
+import jlx.util.log.DebugLogger;
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -80,7 +80,7 @@ public class WebRoboter {
         return client;
     }
     
-    public String search(String corName,HttpClient client) throws Exception{
+    public String search(final String corName,final HttpClient client) throws Exception{
         long start = System.currentTimeMillis();
         DebugLogger.log("start searching com:" + corName);
         String name = URLEncoder.encode(corName,"UTF-8");
@@ -149,7 +149,7 @@ public class WebRoboter {
         return page;
     }
     
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
 //        SystemOutSetter.setSystOut();
         WebRoboter w = new WebRoboter();
         String page = w.search("齐心文仪", w.login());

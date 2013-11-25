@@ -3,10 +3,10 @@ package jlx.tools.research.procesor;
 import java.util.ArrayList;
 import java.util.List;
 
-import jlx.tools.research.utils.ConfigUtil;
-import jlx.tools.research.utils.RegexUtils;
-import jlx.tools.research.utils.UrlStrUtil;
 import jlx.tools.research.vo.CompanyInfo;
+import jlx.util.ConfigUtil;
+import jlx.util.RegexUtils;
+import jlx.util.UrlStrUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,7 +35,7 @@ public class AnchorParser implements IParser {
      * @see jlx.tools.research.procesor.IParser#parse(java.util.List)
      */
     @Override
-    public List<CompanyInfo> parse(List<String> contentList, String key, String webURL) {
+    public List<CompanyInfo> parse(final List<String> contentList, final String key, final String webURL) {
         List<CompanyInfo> result = new ArrayList<CompanyInfo>();
 
         for (String aStr : contentList) {

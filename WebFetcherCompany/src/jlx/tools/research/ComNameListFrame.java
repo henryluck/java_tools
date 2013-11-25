@@ -16,10 +16,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import jlx.tools.research.utils.SystemOutSetter;
 import jlx.tools.research.vo.CompanyInfo;
 import jlx.tools.research.zhaopin.CorSearcher;
-import javax.swing.JSeparator;
+import jlx.util.log.SystemOutSetter;
 
 /**
  * {class description} <br>
@@ -40,19 +39,20 @@ import javax.swing.JSeparator;
  */
 public class ComNameListFrame extends JFrame {
 
-    private JPanel m_contentPane;
-    private JTextArea m_textArea_comList;
-    private JTextArea m_textArea_result;
-    private JScrollPane m_scrollPane_comList;
-    private JScrollPane m_scrollPane_result;
-    private JButton m_button;
+    private final JPanel m_contentPane;
+    private final JTextArea m_textArea_comList;
+    private final JTextArea m_textArea_result;
+    private final JScrollPane m_scrollPane_comList;
+    private final JScrollPane m_scrollPane_result;
+    private final JButton m_button;
 
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SystemOutSetter.setSystOut("namelist.log");
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
                     ComNameListFrame frame = new ComNameListFrame();
@@ -70,7 +70,7 @@ public class ComNameListFrame extends JFrame {
     public ComNameListFrame() {
         addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(ComponentEvent e) {
+            public void componentResized(final ComponentEvent e) {
                 onResize();
             }
         });
@@ -103,7 +103,8 @@ public class ComNameListFrame extends JFrame {
 
         m_button = new JButton("开始批量查询");
         m_button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
                 m_button.setEnabled(false);
                 searchComList();
             }

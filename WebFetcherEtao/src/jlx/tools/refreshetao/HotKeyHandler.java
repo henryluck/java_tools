@@ -24,7 +24,7 @@ public class HotKeyHandler implements IHotKeyAction {
 
     @Override
     public int getKeycode() {
-        return 'j';
+        return 'I';
     }
 
     @Override

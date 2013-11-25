@@ -24,7 +24,7 @@ public interface IHotKeyAction {
     int getModifier();
     
     /**
-     * 热键字符,例如： 'j'
+     * 热键字符,例如： 'J'  注：要用大写
      * @return
      */
     int getKeycode();
