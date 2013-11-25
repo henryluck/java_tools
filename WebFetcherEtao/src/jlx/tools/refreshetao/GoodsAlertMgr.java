@@ -46,6 +46,7 @@ public class GoodsAlertMgr {
     private JScrollPane jfeaPan = null;
     private JLabel update = null;
     private SimpleDateFormat sdf = null;
+    private String url;
 
     {
         sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -60,9 +61,10 @@ public class GoodsAlertMgr {
         this.doIt();
     }
 
-    public GoodsAlertMgr(final String msg, final Image image) {
+    public GoodsAlertMgr(final String msg, final Image image,final String url) {
         feaMap.put("feature", msg);
         this.img = image;
+        this.url = url;
         this.doIt();
     }
 
@@ -85,8 +87,8 @@ public class GoodsAlertMgr {
         new GoodsAlertMgr(msg);
     }
 
-    public static void pop(final String msg, final Image image) {
-        new GoodsAlertMgr(msg, image);
+    public static void pop(final String msg, final Image image,final String url) {
+        new GoodsAlertMgr(msg, image,url);
     }
 
     public void init() {
@@ -95,7 +97,7 @@ public class GoodsAlertMgr {
         int width = 300;
         int height = 400;
         tw = new TipWindow(width, height);
-        
+
         // 设置各个面板的布局以及面板中控件的边界
         headPan = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         feaPan = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
@@ -107,13 +109,13 @@ public class GoodsAlertMgr {
         update = new JLabel();
 
         // 将各个面板设置为透明，否则看不到背景图片
-//        ((JPanel) tw.getContentPane()).setOpaque(false);
-//        headPan.setOpaque(false);
-//        feaPan.setOpaque(false);
-//        btnPan.setOpaque(false);
+        // ((JPanel) tw.getContentPane()).setOpaque(false);
+        // headPan.setOpaque(false);
+        // feaPan.setOpaque(false);
+        // btnPan.setOpaque(false);
 
         // 设置JDialog的整个背景图片
-//        tw.getLayeredPane().add(imgLabel, new Integer(Integer.MIN_VALUE));
+        // tw.getLayeredPane().add(imgLabel, new Integer(Integer.MIN_VALUE));
         headPan.setPreferredSize(new Dimension(300, 30));
 
         // 设置提示框的边框,宽度和颜色
@@ -139,7 +141,7 @@ public class GoodsAlertMgr {
         // 设置文本域自动换行
         feature.setLineWrap(true);
 
-        jfeaPan.setPreferredSize(new Dimension(width-10, 100));
+        jfeaPan.setPreferredSize(new Dimension(width - 10, 100));
         jfeaPan.setBorder(LineBorder.createBlackLineBorder());
         jfeaPan.setBackground(Color.black);
 
@@ -150,7 +152,7 @@ public class GoodsAlertMgr {
         update.setPreferredSize(new Dimension(110, 30));
         // 设置标签鼠标手形
         update.setCursor(new Cursor(12));
-        
+
         if (img == null) {
             try {
                 img = ImageIO.read(getRes("jlx/tools/research/pop/bg_u_all.gif"));
@@ -158,21 +160,27 @@ public class GoodsAlertMgr {
                 e.printStackTrace();
             }
         }
-        
+
         Image image = changeImageSize(img);
         ImageIcon icon = new ImageIcon(image);
-        
+
         imgLabel = new JLabel(icon);
         imgLabel.setBounds(0, 0, icon.getIconHeight(), icon.getIconHeight());
+        imgLabel.   setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        imgLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                openURL(url);
+            }
+        });
 
         headPan.add(title);
         headPan.add(close);
-//        headPan.add(head);
+        // headPan.add(head);
 
-//        feaPan.add(jsp);
+        // feaPan.add(jsp);
         feaPan.add(jfeaPan);
         feaPan.add(imgLabel);
-        
 
         btnPan.add(update);
 
@@ -181,20 +189,20 @@ public class GoodsAlertMgr {
         tw.add(btnPan, BorderLayout.SOUTH);
 
     }
-    
 
     /**
      * {method description}.
+     * 
      * @param gs
      * @return
      */
     private BufferedImage changeImageSize(final Image input) {
-        //转换图片大小，创建一个BufferedImage
-            int imgWidth = 260;
-            int imgHeigth = 260;
-            BufferedImage image = new BufferedImage(imgWidth,imgHeigth,BufferedImage.TYPE_3BYTE_BGR);
-          //把图片读到bufferedImage中
-            image.getGraphics().drawImage(input,0,0, imgWidth, imgHeigth, null);
+        // 转换图片大小，创建一个BufferedImage
+        int imgWidth = 260;
+        int imgHeigth = 260;
+        BufferedImage image = new BufferedImage(imgWidth, imgHeigth, BufferedImage.TYPE_3BYTE_BGR);
+        // 把图片读到bufferedImage中
+        image.getGraphics().drawImage(input, 0, 0, imgWidth, imgHeigth, null);
         return image;
     }
 
@@ -262,9 +270,27 @@ public class GoodsAlertMgr {
         return this.getClass().getClassLoader().getResource(str);
     }
 
+    private void openURL(final String url) {
+        if (java.awt.Desktop.isDesktopSupported()) {
+            try {
+                // 创建一个URI实例
+                java.net.URI uri = java.net.URI.create(url);
+                // 获取当前系统桌面扩展
+                java.awt.Desktop dp = java.awt.Desktop.getDesktop();
+                // 判断系统桌面是否支持要执行的功能
+                if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                    // 获取系统默认浏览器打开链接
+                    dp.browse(uri);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void main(final String args[]) throws IOException {
         BufferedImage image = ImageIO.read(new File("g:/temp/test.jpg"));
-        GoodsAlertMgr.pop("1.公司1\n2.公司2\n3.公司3\n4.公司4\n", image);
+        GoodsAlertMgr.pop("1.公司1\n2.公司2\n3.公司3\n4.公司4\n", image,"http://www.baidu.com");
     }
 
 }

@@ -211,7 +211,7 @@ public class MainFrame extends JFrame implements IUpdateTextFrame<GoodsVO> {
             buffer.append(gs.title);
             buffer.append("\n").append(gs.content);
             
-            GoodsAlertMgr.pop(buffer.toString(),gs.image);
+            GoodsAlertMgr.pop(buffer.toString(),gs.image,gs.url);
 
         }
     }
