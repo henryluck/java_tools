@@ -15,6 +15,8 @@ import javax.swing.UIManager;
 import jlx.util.hotkey.SystemHotKeyManager;
 import jlx.util.log.SystemOutSetter;
 
+import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
+
 /**
  *
  * @author jianglx
@@ -24,8 +26,9 @@ public class Main {
     public static void main(final String[] args) {
         
         try {
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            // UIManager.setLookAndFeel(new NimbusLookAndFeel());
+            
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+             UIManager.setLookAndFeel(new NimbusLookAndFeel());
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {

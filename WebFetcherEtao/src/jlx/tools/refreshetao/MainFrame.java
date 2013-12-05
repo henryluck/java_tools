@@ -132,6 +132,7 @@ public class MainFrame extends JFrame implements IUpdateTextFrame<GoodsVO> {
         m_contentPane.add(m_scrollPane);
 
         m_textArea = new JTextArea();
+        m_textArea.setText("Hide Me: Ctrl + Alt + I");      
         m_scrollPane.setViewportView(m_textArea);
         //初始化任务
         BaseConnInfo connInfo = new BaseConnInfo();
