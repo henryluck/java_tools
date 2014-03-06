@@ -1,17 +1,13 @@
 package jlx.tools.refreshetao;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import jlx.tools.webfetcher.processor.IProcessor;
 import jlx.tools.webfetcher.task.BaseConnInfo;
 import jlx.util.RegexUtils;
+import jlx.util.WebUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -50,7 +46,7 @@ public class EtaoProcessor implements IProcessor<GoodsVO>{
             gs.imageUrl = RegexUtils.getMatchString(item,imageUrlRegex);
             gs.title = RegexUtils.getMatchString(item,titleRegex);
             gs.url = RegexUtils.getMatchString(item,urlRegex);
-            gs.image = getImage(gs.imageUrl);
+            gs.image = WebUtil.getImage(gs.imageUrl);
             result.add(gs);
         }
         
@@ -61,19 +57,6 @@ public class EtaoProcessor implements IProcessor<GoodsVO>{
         Document doc1 = Jsoup.connect(webURL).get();
         String page = doc1.html();
         System.out.println(page);
-    }
-    public BufferedImage getImage(final String imageurl) {
-        BufferedImage image = null;
-        try {
-            URL url = new URL(imageurl);
-            URLConnection connection = url.openConnection();
-            connection.setDoOutput(true);
-            image = ImageIO.read(connection.getInputStream());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return image;
     }
     
     @Override

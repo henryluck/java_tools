@@ -146,7 +146,7 @@ public class WebProcessor {
 
     public static void main(final String[] args) throws Exception {
         System.setProperty("TestMain", "true");
-        new WebProcessor().parseWeb("yicai", ConfigUtil.getDefaultURLByKey("yicai"));
+        new WebProcessor().parseWeb("chinahr", ConfigUtil.getDefaultURLByKey("chinahr"));
 //        printPage("http://www.51job.com/tianjin");
     }
 }
