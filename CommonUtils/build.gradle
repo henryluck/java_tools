@@ -1,9 +1,11 @@
 
 
 apply plugin: 'java'
+apply plugin: 'maven'
 apply plugin: 'eclipse'
 
 sourceCompatibility = 1.6
+group = 'jlx.util'
 version = '1.0'
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'  
@@ -15,6 +17,9 @@ jar {
     }
 }
 repositories {
+	maven{
+		url 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+	}
     mavenCentral()
 }
 
@@ -30,9 +35,10 @@ test {
 
 uploadArchives {
     repositories {
-       flatDir {
-           dirs 'repos'
-       }
+        mavenDeployer {
+        	mavenLocal()
+        }
     }
 }
+
 
