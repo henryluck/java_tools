@@ -33,7 +33,7 @@ import javax.swing.JOptionPane;
 
 import jlx.util.log.DebugLogger;
 
-import com.sun.media.imageio.plugins.tiff.TIFFImageWriteParam;
+//import com.sun.media.imageio.plugins.tiff.TIFFImageWriteParam;
 
 public class ImageIOHelper {
 	public ImageIOHelper() {
@@ -51,8 +51,8 @@ public class ImageIOHelper {
 			IIOMetadata streamMetadata = reader.getStreamMetadata();
 
 			// Set up the writeParam
-			TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
-			tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
+//			TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
+//			tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
 
 			// Get tif writer and set output to file
 			Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("tiff");
@@ -63,7 +63,7 @@ public class ImageIOHelper {
 			tempFile = tempImageFile(imageFile);
 			ImageOutputStream ios = ImageIO.createImageOutputStream(tempFile);
 			writer.setOutput(ios);
-			writer.write(streamMetadata, image, tiffWriteParam);
+//			writer.write(streamMetadata, image, tiffWriteParam);
 			ios.close();
 
 			writer.dispose();
@@ -79,8 +79,8 @@ public class ImageIOHelper {
 		try {
 			tempFile = File.createTempFile("tempImageFile", ".tif");
 			tempFile.deleteOnExit();
-			TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
-			tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
+//			TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
+//			tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
 
 			// Get tif writer and set output to file
 			Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("tiff");
@@ -90,7 +90,7 @@ public class ImageIOHelper {
 			tempFile = tempImageFile(tempFile);
 			ImageOutputStream ios = ImageIO.createImageOutputStream(tempFile);
 			writer.setOutput(ios);
-			writer.write(null, image, tiffWriteParam);
+//			writer.write(null, image, tiffWriteParam);
 			ios.close();
 			writer.dispose();
 		} catch (Exception exc) {
