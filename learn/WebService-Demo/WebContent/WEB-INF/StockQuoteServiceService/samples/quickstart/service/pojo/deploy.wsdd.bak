@@ -1,0 +1,33 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from StockQuoteServiceService WSDL service -->
+
+  <service name="StockQuoteService" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://pojo.service.quickstart.samples"/>
+      <parameter name="wsdlServiceElement" value="StockQuoteServiceService"/>
+      <parameter name="schemaQualified" value="http://pojo.service.quickstart.samples"/>
+      <parameter name="wsdlServicePort" value="StockQuoteService"/>
+      <parameter name="className" value="samples.quickstart.service.pojo.StockQuoteServiceSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="StockQuoteService"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="update" qname="operNS:update" xmlns:operNS="http://pojo.service.quickstart.samples" soapAction="" >
+        <parameter qname="pns:symbol" xmlns:pns="http://pojo.service.quickstart.samples" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:price" xmlns:pns="http://pojo.service.quickstart.samples" type="tns:double" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getPrice" qname="operNS:getPrice" xmlns:operNS="http://pojo.service.quickstart.samples" returnQName="retNS:getPriceReturn" xmlns:retNS="http://pojo.service.quickstart.samples" returnType="rtns:double" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:symbol" xmlns:pns="http://pojo.service.quickstart.samples" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="update getPrice"/>
+
+  </service>
+</deployment>

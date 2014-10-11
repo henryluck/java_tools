@@ -1,0 +1,5 @@
+grant{
+	permission java.net.SocketPermission "*:1024-65535","connect,resolve";
+	//io is not necessary,only a e.g!
+	permission java.io.FilePermission "/temp/*","read";
+};
