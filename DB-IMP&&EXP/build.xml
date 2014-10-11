@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<project name="DBImpExp" default="dist" basedir=".">
+
+	<!-- ========== Initialize Properties ===================================== -->
+
+	<property name="dist.dir" location="dist" />
+	<property name="lib.dir" location="${dist.dir}/lib" />
+	<property name="resource.dir" location="${dist.dir}/resource" />
+	<property name="build.dir" location="build" />
+	<property name="source.home" location="src/main/java" />
+	<property name="manifest.home" location="src/main/META-INF" />
+	<property name="bat.dir" location="bat" />
+
+	<property name="build.name" value="kaka" />
+	<property name="jar.name" value="db.imp.exp" />
+	<property name="jar.version" value="0.5" />
+
+	<target name="dist" description="dist" depends="jar">
+		<copy todir="${lib.dir}">
+			<fileset dir="./lib">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${dist.dir}">
+			<fileset dir="${bat.dir}">
+				<include name="*.*" />
+			</fileset>
+		</copy>
+		<copy todir="${resource.dir}">
+			<fileset dir="${source.home}">
+				<include name="*.properties" />
+			</fileset>
+		</copy>
+	</target>
+
+
+	<target name="jar" description="jar" depends="clean,build">
+		<jar jarfile="${lib.dir}/${jar.name}-${jar.version}.jar" manifest="${manifest.home}/MANIFEST.MF">
+			<fileset dir="${build.dir}/classes">
+				<include name="**/*.class" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="build" description="Compile source">
+		<mkdir dir="${build.dir}/classes" />
+		<mkdir dir="${lib.dir}" />
+		<mkdir dir="${resource.dir}" />
+
+		<javac srcdir="${source.home}" encoding="UTF-8" destdir="${build.dir}/classes" target="1.4" source="1.4" failonerror="true" deprecation="true">
+		</javac>
+
+	</target>
+
+	<target name="javadoc" description="javadocs">
+		<mkdir dir="${dist.dir}/doc/api" />
+		<javadoc destdir="${dist.dir}/doc/api" author="true" version="true" windowtitle="DBImpExp Tools" doctitle="DBImpExp Tools" bottom="O(∩_∩)O">
+			<fileset dir="${source.home}" includes="**/*.java" />
+		</javadoc>
+	</target>
+
+	<target name="clean" description="Delete build and dist trees">
+		<delete dir="dist" />
+		<delete dir="build" />
+	</target>
+
+</project>
