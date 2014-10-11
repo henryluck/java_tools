@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+	<node name="起草" type="normal" department-select-one="yes" hiberarchy="yes" multi-user="no">
+		<department name="XX公司/财务部">
+			<people id="test4" name="test4" proxy="XX公司/财务部|test5" />
+		</department>
+	</node>
+</nodes>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<invoke type="waitWork.submitWork" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://192.168.17.239/XML/schema/invoke.xsd">
+	<return type="return" />
+	<parameters>
+		<object name="user">
+			<property name="fullname">test7</property>
+			<property name="name">test7</property>
+			<property name="id">null</property>
+		</object>
+		<object name="worklist">
+			<property name="docid">5283</property>
+			<property name="workid">20513</property>
+		</object>
+		<object name="selectPath">
+			<list>
+				<object name="path0">
+					<property name="name">路径80</property>
+					<property name="node">起草</property>
+					<property name="multiuser">no</property>
+					<property name="type">normal</property>
+					<list>
+						<object name="people">
+							<property name="fullname">test5:XX公司/财务部|test4</property>
+							<property name="name">test4</property>
+							<property name="dept">XX公司/财务部</property>
+						</object>
+					</list>
+				</object>
+			</list>
+		</object>
+		<object name="extend">
+			<property name="childName">fwgl.nsf</property>
+		</object>
+	</parameters>
+</invoke>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<invoke type="waitWork.submitWork" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://192.168.17.239/XML/schema/invoke.xsd">
+	<return type="return" />
+	<parameters>
+		<object name="user">
+			<property name="fullname">test7</property>
+			<property name="name">test7</property>
+			<property name="id">null</property>
+		</object>
+		<object name="worklist">
+			<property name="docid">1421</property>
+			<property name="workid">6151</property>
+		</object>
+		<object name="selectPath">
+			<list>
+				<object name="path0">
+					<property name="name">路径30</property>
+					<property name="node">环节30</property>
+					<property name="multiuser">no</property>
+					<property name="type">normal</property>
+					<list>
+						<object name="people">
+							<property name="fullname">3232323</property>
+							<property name="name">wwwww</property>
+							<property name="dept">北京环亚时代信息技术有限公司/研发中心/项目管理部</property>
+						</object>
+					</list>
+				</object>
+			</list>
+		</object>
+		<object name="extend">
+			<property name="childName">fwgl.nsf</property>
+		</object>
+	</parameters>
+</invoke>

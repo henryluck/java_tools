@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app id="WebApp_ID">
+	<display-name>sso</display-name>
+	<servlet>
+		<servlet-name>SSOServlet</servlet-name>
+		<display-name>SSOServlet</display-name>
+		<description>Using Servlet Process LTPA SSO</description>
+		<servlet-class>
+		com.mdcl.web.sso.SSORequestServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SSOServlet</servlet-name>
+		<url-pattern>/SSOServlet</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+	<security-constraint>
+		<display-name>WebSSOSecurity</display-name>
+		<web-resource-collection>
+			<web-resource-name>SSOServer</web-resource-name>
+			<description>Protected Resource</description>
+			<url-pattern>/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>PUT</http-method>
+			<http-method>HEAD</http-method>
+			<http-method>TRACE</http-method>
+			<http-method>POST</http-method>
+			<http-method>DELETE</http-method>
+			<http-method>OPTIONS</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<description>All Authenticated Users Role.</description>
+			<role-name>ALL Roles</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	<security-role>
+		<description>SORequestservlet Servlet Security:+:All Authenticated users for SSORequestservlet Servlet.</description>
+		<role-name>ALL Roles</role-name>
+	</security-role>
+</web-app>
