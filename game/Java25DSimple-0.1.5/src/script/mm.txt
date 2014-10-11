@@ -1,0 +1,14 @@
+set mmName = "猫猫"
+set faceImage = "image/role/rogue_face.png"
+cg del
+cg print(faceImage)
+set rand = rand(4)
+if rand==0
+	mes {print(mmName)}传说中武学至高四境分别为：超凡入圣、超圣入神、超神入化、超化还虚。但古往今来能成就<r超化还虚/>之境的，据说只有超级赛亚人孙悟空和绝世邪兽<g欺实马/>而已。
+else if rand==1
+	mes {print(mmName)}除了超级赛亚人之外，听说<r终极思密达/>也厉害非常，他们的力量甚至能够<y用嘴/>去创造宇宙……
+else if rand==2
+	mes {print(mmName)}“如来神掌”与“耶稣神拳”、“安拉神腿”并称当世武林三绝，不过传闻某国的“天罺河蟹诀”比三绝更强百倍，我也不知真假。
+else if rand==3
+	mes {print(mmName)}你知道吗？南宫问天的老大是<y东尼黄/>，而有史以来最腹黑的武林人物名叫<r素还真/>。
+endif

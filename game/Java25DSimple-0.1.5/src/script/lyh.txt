@@ -1,0 +1,20 @@
+set plsqName = "鹏凌三千"
+set lyhName = "炼妖狐"
+set faceImage = "image/role/assassin_face.png"
+cg del
+cg print(faceImage)
+mes {print(lyhName)}我有个问题要请教你，那就是——
+mes {print(lyhName)}print(plsqName)长的帅不帅？
+	   in 
+		根本不能用人类的相貌加以形容。
+		你不知他人送绰号“三重刘德华”吗？
+		“帅”字和他绝缘很多年。 
+	   out
+	   
+if SELECT==0
+	   mes {print(lyhName)}你很诚实~
+	else if SELECT==1
+	   mes {print(lyhName)}说谎是做贼的开始……
+	else if SELECT==2
+	   mes {print(lyhName)}这个嘛，嗯，确实，但不够贴切……
+endif 
