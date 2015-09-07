@@ -19,16 +19,17 @@ public class ConfigurationCBP extends JavassistClassBytecodeProcessor {
         if(ClassUtils.isExecuted(ctClass)){
             return;
         }
-        
+        cp.importPackage("com.jrebel.plugin.dam");
         CtConstructor[] constructors = ctClass.getConstructors();
         for (int i = 0; i < constructors.length; i++) {
           CtConstructor constructor = constructors[i];
           if (constructor.callsSuper()) {
-            constructor.insertAfter("com.jrebel.plugin.dam.Debuger.log(\"赋值引用config\");com.jrebel.plugin.dam.SqlMapXmlFilesManager.config=this;");
+            constructor.insertAfter("Debuger.log(\"JRebel dam plugin: DAMFactory process,SqlMapXmlFilesManager引用mybatis Configuration\");"
+                + "com.jrebel.plugin.dam.SqlMapXmlFilesManager.config=this;");
           }
         }
         ctClass.addInterface(cp.get(JrConfiguration.class.getName()));
-        ctClass.addMethod(CtNewMethod.make("public void reInitConfig() { "
+        ctClass.addMethod(CtNewMethod.make("public void clearConfig() { "
             +" loadedResources.clear();"
             +"mappedStatements.clear();"
             +"resultMaps.clear();"
@@ -36,7 +37,7 @@ public class ConfigurationCBP extends JavassistClassBytecodeProcessor {
             +"sqlFragments.clear();"
             +"keyGenerators.clear();"
             +"caches.clear();"
-            +"com.jrebel.plugin.dam.Debuger.log(\"DAM Configuration loadedResources clear!!\");}", ctClass));
+            +"com.jrebel.plugin.dam.Debuger.log(\"JRebel dam plugin: Configuration process,DAM Configuration all clear!!\");}", ctClass));
 
         ctClass.getDeclaredMethod("isResourceLoaded").insertAfter("if (com.jrebel.plugin.dam.SqlMapXmlFilesManager.check(getClass().getClassLoader())) {  loadedResources.remove($1);  $_ = false;}");
       }

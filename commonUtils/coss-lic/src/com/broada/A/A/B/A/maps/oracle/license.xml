@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="license">
+
+	<select id="getValueByKey" parameterClass="java.lang.String" resultClass="java.lang.String">
+	  <![CDATA[
+			select value from sys_license where key=#key#
+		]]>
+	</select>
+		
+	<insert id="insertLicenseInfo" parameterClass="java.lang.String">
+		<![CDATA[
+  		insert into sys_license(key, value) 
+  		values('licenseInfo', #licenseInfo#)
+  	]]>
+	</insert>
+
+	<update id="updateLicenseInfo" parameterClass="java.lang.String">
+	 	 <![CDATA[
+		  update sys_license set value=#licenseInfo# where key='licenseInfo'
+	   ]]>
+	</update>
+	
+	<insert id="insertLastRunTime" parameterClass="java.lang.String">
+		<![CDATA[
+  		insert into sys_license(key, value) 
+  		values('lastRunTime', #lastRunTime#)
+  	]]>
+	</insert>
+
+	<update id="updateLastRunTime" parameterClass="java.lang.String">
+	 	 <![CDATA[
+		  update sys_license set value=#lastRunTime# where key='lastRunTime'
+	   ]]>
+	</update>
+	
+	<insert id="insertFirstRunTime" parameterClass="java.lang.String">
+		<![CDATA[
+  		insert into sys_license(key, value) 
+  		values('firstRunTime', #firstRunTime#)
+  	]]>
+	</insert>
+
+	<update id="updateFirstRunTime" parameterClass="java.lang.String">
+	 	 <![CDATA[
+		  update sys_license set value=#firstRunTime# where key='firstRunTime'
+	   ]]>
+	</update>
+	
+  <insert id="insertLicensee" parameterClass="java.lang.String">
+		<![CDATA[
+  		insert into sys_license(key, value) 
+  		values('licensee', #licensee#)
+  	]]>
+	</insert>
+
+	<update id="updateLicensee" parameterClass="java.lang.String">
+	 	 <![CDATA[
+		  update sys_license set value=#licensee# where key='licensee'
+	   ]]>
+	</update>
+  
+  <delete id="deleteByKey" parameterClass="java.lang.String">
+		delete from sys_license where key=#key#
+	</delete>
+  
+	<delete id="deleteAll">
+		delete from sys_license
+	</delete>
+
+</sqlMap>

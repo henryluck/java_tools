@@ -1,0 +1,44 @@
+
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.6
+group = 'jlx.tools.jrebel.mybatis'
+version = '5.6.3'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'  
+
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'jrebel mytatis plugin', 'Implementation-Version': version,'JavaRebel-Plugin':'com.jrebel.plugin.dam.DamPlugin'
+    }
+}
+repositories {
+	maven{
+		url 'file://D:/maven_rep'// + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+	}
+    mavenCentral()
+}
+
+dependencies {
+	compile 'org.mybatis:mybatis:3.2.7'
+	compile 'com.riil.server.framework:riil-core:6.6.0-SNAPSHOT'
+    compile files('file://F:/eclipse-jee-juno-SR2-win32/plugins/org.zeroturnaround.eclipse.embedder_5.3.1.RELEASE-201307081557/jrebel/jrebel.jar')
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+        	mavenLocal()
+        }
+    }
+}
+

@@ -1,0 +1,32 @@
+{
+"configs" : [
+  {
+"server" : "US1.SSSERVER.PW",
+"server_port" : 8989,
+"password" : "12312312",
+"method" : "aes-256-cfb",
+"remarks" : "US1"}
+, 
+  {
+"server" : "US2.SSSERVER.PW",
+"server_port" : 8989,
+"password" : "21018907",
+"method" : "aes-256-cfb",
+"remarks" : "US2"},
+  {
+"server" : "US3.SSSERVER.PW",
+"server_port" : 8989,
+"password" : "69896802",
+"method" : "aes-256-cfb",
+"remarks" : "us3"}
+
+],
+"strategy" : "com.shadowsocks.strategy.balancing",
+"index" : -1,
+"global" : false,
+"enabled" : true,
+"shareOverLan" : false,
+"isDefault" : false,
+"localPort" : 1080,
+"pacUrl" : null,
+"useOnlinePac" : false}

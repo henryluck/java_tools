@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: zeroturnaround
+Build-Jdk: 1.8.0_20
+JavaRebel-Plugin: org.zeroturnaround.jrebel.mybatis.MyDAMBatisPlugin
+
