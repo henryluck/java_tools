@@ -1,0 +1,42 @@
+
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+group = 'jlx.tools.shadowsocks'
+version = '1.0'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'  
+
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'Shadowsocks','Implementation-Title': 'jlx shadowsocks tool', 'Implementation-Version': version
+    }
+}
+repositories {
+	maven{
+		url 'file://D:/maven_rep'// + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+	}
+    mavenCentral()
+}
+
+dependencies {
+	compile 'com.google.code.gson:gson:2.2.4'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+        	mavenLocal()
+        }
+    }
+}
+
