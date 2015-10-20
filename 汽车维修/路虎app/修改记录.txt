@@ -1,0 +1,6 @@
+1.SpxInterceptor  intercept方法里面的验证都去掉
+2. 37行 ： structsUser.xml is_login_required action 成功跳转到 /user/systemsettings_dealer_information.action
+
+文件在dist目录：
+	SpxInterceptor.class  ： C:\Program Files (x86)\JLR\SDD\SDD\app.war\WEB-INF\lib\app.jar\com\jlr\sdd\core\actions\SpxInterceptor.class 
+	strutsUser.xml : C:\Program Files (x86)\JLR\SDD\SDD\app.war\WEB-INF\lib\app.jar

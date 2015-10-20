@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- Struts2 actions for SDD User Login and Logout. --> 
+
+	<package name="user" extends="sdd" namespace="/user">
+		
+		<action name="clockback_detected">
+			<result type="tiles">user_authentication_clockback.index</result>
+		</action>
+		
+		<action name="expired_login" class="com.jlr.sdd.userauthentication.actions.ExpiredLoginAction">
+			<result type="tiles">user_authentication_expired_login.index</result>
+		</action>
+		
+		<action name="expired_offline_login" class="com.jlr.sdd.userauthentication.actions.ExpiredOfflineLoginAction">
+			<result type="tiles">user_authentication_expired_offline_login.index</result>
+		</action>
+		
+		<action name="expired_restricted_access" class="com.jlr.sdd.userauthentication.actions.ExpiredRestrictedAccessAction">
+			<result type="tiles">user_authentication_expired_restricted_access.index</result>
+		</action>
+		
+		<action name="expired_topix" class="com.jlr.sdd.userauthentication.actions.ExpiredTopixAction">
+			<result type="tiles">user_authentication_expired_topix.index</result>
+		</action>
+		
+		<action name="is_login_required" class="com.jlr.sdd.userauthentication.actions.IsAuthenticationRequiredAction">
+			<result name="AUTHORISED_REPAIRER" type="redirect-action">
+				<param name="actionName">systemsettings_dealer_information_check</param>
+			</result>
+			<result name="success" type="redirect-action">
+				<param name="actionName">/user/warning.action</param>
+			</result>
+			<result name="error" type="tiles">user_authentication_no_connection.index</result>
+		</action>
+		
+		<action name="request_login" class="com.jlr.sdd.userauthentication.actions.LoginAuthenticationAction">
+			<result name="success" type="tiles">user_authentication_entry.index</result>
+			<result name="NoOfflineCertificates" type="tiles">user_authentication_offline_not_available.index</result>
+			<result name="ClockbackDetected" type="tiles">user_authentication_clockback.index</result>
+		</action>
+		
+		<action name="redirect_login_request" class="com.jlr.sdd.userauthentication.actions.RedirectLoginRequestAction">
+			<result name="success" type="tiles">redirect_login_request.index</result>
+		</action>
+		
+		<action name="login_authorisation" class="com.jlr.sdd.userauthentication.actions.LoginAuthorisationAction">
+			<result name="success"              type="tiles">user_authentication_login_success.index</result>
+			<result name="SWITCH_PRODUCT"       type="tiles">user_authentication_switch.index</result>
+			<result name="OFFLINE_LOGIN_FAILED" type="tiles">user_authentication_failed_offline.index</result>
+			<result name="ONLINE_LOGIN_FAILED"  type="tiles">user_authentication_failed_online.index</result>
+		</action>
+				
+		<action name="logout_check" class="com.jlr.sdd.core.sessions.actions.IsSessionClosedAction">
+			<result name="SESSION_NOT_CLOSED" type="tiles">user_authentication_logout_notclosed.index</result>
+			<result name="SESSION_CLOSED" type="tiles">user_authentication_logout_confirm.index</result>
+		</action>
+		
+		<action name="logout_close_session" class="com.jlr.sdd.vqual.actions.CloseSessionAction">
+			<result name="success" type="redirect-action">
+				<param name="vin">${vin}</param>
+				<param name="logout">true</param>
+				<param name="actionName">vehicle_export_session_on_logout</param>
+			</result>
+			<result name="NO_VEHICLE_INFO" type="redirect-action">
+				<param name="actionName">/user/logout_completion</param>
+			</result>
+		</action>
+		
+		<action name="logout_completion" class="com.jlr.sdd.userauthentication.actions.LogoutCompletionAction">
+			<result name="LOGOUT_FROM_LEGACY_COMPLETE" type="tiles">stop_runtime_services_on_legacy_logout.index</result>
+				<param name="legacyLogout">true</param>
+			<result name="success" type="tiles">user_authentication_logout_success.index</result>
+		</action>
+		
+		<action name="product_type_switch" class="com.jlr.sdd.userauthentication.actions.ProductTypeSwitchAction"/>
+		
+		<action name="restricted_access_selected" class="com.jlr.sdd.userauthentication.actions.RestrictedAccessSelectedAction">
+			<result name="success" type="redirect-action">
+				<param name="actionName">systemsettings_dealer_information_check</param>
+			</result>
+		</action>
+	</package>
+</struts>
