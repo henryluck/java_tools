@@ -69,7 +69,7 @@ public class TaskManager<T> implements Runnable{
                 }
                 
                 DebugLogger.log("一次用时："+(System.currentTimeMillis()-start));
-                Thread.sleep(10000);
+				Thread.sleep(1000000);
                 
             } catch (Exception e) {
                 e.printStackTrace();

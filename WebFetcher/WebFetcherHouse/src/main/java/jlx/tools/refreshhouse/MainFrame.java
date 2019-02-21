@@ -9,11 +9,13 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,6 +25,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import jlx.tools.refreshhouse.pagetask.HouseVO;
+import jlx.tools.refreshhouse.pagetask.QiuRunProcessor;
 import jlx.tools.webfetcher.IUpdateTextFrame;
 import jlx.tools.webfetcher.task.BaseConnInfo;
 import jlx.tools.webfetcher.task.HttpTask;
@@ -140,18 +144,18 @@ public class MainFrame extends JFrame implements IUpdateTextFrame<HouseVO> {
         
         txtPrice = new JTextField();
         txtPrice.setFont(new Font("宋体", Font.PLAIN, 12));
-        txtPrice.setText("7000");
-        txtPrice.setBounds(92, 11, 66, 21);
+		txtPrice.setText("350");
+		txtPrice.setBounds(115, 10, 66, 21);
         m_contentPane.add(txtPrice);
         txtPrice.setColumns(10);
         
-        JLabel lblPriceLimite = new JLabel("price limit:");
-        lblPriceLimite.setBounds(10, 14, 72, 19);
+		JLabel lblPriceLimite = new JLabel("price all limit:");
+		lblPriceLimite.setBounds(10, 14, 93, 19);
         m_contentPane.add(lblPriceLimite);
         //初始化任务
         BaseConnInfo connInfo = new BaseConnInfo();
-        connInfo.setUrl(Web58HouseProcessor.url);
-        HttpTask<HouseVO> task = new HttpTask<HouseVO>(connInfo, new Web58HouseProcessor());
+		connInfo.setUrl(QiuRunProcessor.url);
+		HttpTask<HouseVO> task = new HttpTask<HouseVO>(connInfo, new QiuRunProcessor());
         taskManager.addTask(task);
 
     }
@@ -218,16 +222,21 @@ public class MainFrame extends JFrame implements IUpdateTextFrame<HouseVO> {
 
     // 过滤没有归属的新公司提示出来
     public void popNoneOwner(final List<HouseVO> list) {
-        
-        for (int i = 0; i < list.size(); i++) {
-            StringBuffer buffer = new StringBuffer();
-            HouseVO vo = list.get(i);
-            buffer.append(vo.title).append("\n").append(vo.priceAll).append("万  ").append(vo.price);
-            buffer.append("\n").append(vo.content);
-            
-            AlertMgr.pop(buffer.toString(),vo.image,vo.url);
-
-        }
+		try {
+			for (int i = 0; i < list.size(); i++) {
+				StringBuffer buffer = new StringBuffer();
+				HouseVO vo = list.get(i);
+				buffer.append(vo.title).append("\n").append(vo.priceAll).append("万  ").append(vo.price);
+				buffer.append("\n").append(vo.content);
+				if (vo.image == null) {
+					URL url = new URL(vo.imageUrl);
+					vo.image = ImageIO.read(url);
+				}
+				AlertMgr.pop(buffer.toString(), vo.image, vo.url);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -242,7 +251,7 @@ public class MainFrame extends JFrame implements IUpdateTextFrame<HouseVO> {
         }
         for (Iterator<HouseVO> iterator = collection.iterator(); iterator.hasNext();) {
             HouseVO vo = iterator.next();
-            if (!all.contains(vo) && txtPrice.getText().compareTo(vo.price)>0) {
+			if (!all.contains(vo) && txtPrice.getText().compareTo(vo.priceAll) > 0) {
                 needAdd.add(vo);
                 all.add(vo);
             }

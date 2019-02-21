@@ -1,4 +1,4 @@
-package jlx.tools.refreshhouse;
+package jlx.tools.refreshhouse.pagetask;
 
 import java.awt.image.BufferedImage;
 

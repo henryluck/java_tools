@@ -3,11 +3,11 @@ package jlx.tools.webfetcher.task;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import jlx.tools.webfetcher.processor.IProcessor;
-
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+
+import jlx.tools.webfetcher.processor.IProcessor;
 
 /**
  * T:task执行完，返回的结果对象
@@ -33,7 +33,8 @@ public class HttpTask<T> implements Callable<List<T>>{
     public List<T> call() throws Exception{
         Connection conn = Jsoup.connect(this.connInfo.getUrl());
         // 加上agent，防止返回wap页面的内容
-        conn.userAgent("Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)");
+		conn.userAgent(
+				"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36");
         conn.timeout(10000);
         conn.followRedirects(true);
         Document doc1 = conn.get();
